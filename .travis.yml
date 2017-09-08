@@ -1,0 +1,7 @@
+language: bash
+script:
+    ./build.sh
+sudo: required
+
+services:
+  - docker
