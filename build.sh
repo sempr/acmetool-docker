@@ -1,5 +1,4 @@
 #!/bin/bash
-set -xe
 
 DIR="$( cd "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
 cd "$DIR"
@@ -8,7 +7,12 @@ URL=`wget -O- https://github.com/hlandau/acme/releases/latest | grep linux_amd64
 VER=`echo $URL | awk -F'-' '{print $2}'`
 IMG=sempr/acmetool
 echo $VER
-#docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+
+if [ "$DOCKER_USERNAME" != "" ]
+then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+fi
+
 IMGALL=$IMG:$VER
 
 docker pull $IMGALL
