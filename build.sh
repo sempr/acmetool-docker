@@ -1,4 +1,5 @@
 #!/bin/bash
+set -xe
 
 DIR="$( cd "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
 cd "$DIR"
@@ -7,7 +8,7 @@ URL=`wget -O- https://github.com/hlandau/acme/releases/latest | grep linux_amd64
 VER=`echo $URL | awk -F'-' '{print $2}'`
 IMG=sempr/acmetool
 echo $VER
-docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+#docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 IMGALL=$IMG:$VER
 
 docker pull $IMGALL
@@ -19,8 +20,8 @@ fi
 
 wget -O acmetool.tgz https://github.com${URL}
 tar xvzf acmetool.tgz --strip 1
-docker build -t $IMGALL
-docker build -t $IMG:latest
+docker build -t $IMGALL .
+docker tag $IMGALL $IMG:latest
 docker push $IMGALL
 docker push $IMG:latest 
 
